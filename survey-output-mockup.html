@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fitted Wardrobe Site Survey — Sample Output</title>
+<style>
+  :root{
+    --ink:#16202a;
+    --muted:#5b6b78;
+    --line:#d9e0e6;
+    --band:#1f3a4d;
+    --paper:#ffffff;
+    --red:#b32b23;
+    --red-bg:#fbeceb;
+    --amber:#9a6a00;
+    --amber-bg:#fbf3e2;
+    --green:#1c7a45;
+    --green-bg:#eaf4ee;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:#eef1f4;
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);
+    line-height:1.45;
+    padding:28px 16px;
+  }
+  .sheet{
+    max-width:760px;
+    margin:0 auto;
+    background:var(--paper);
+    box-shadow:0 4px 22px rgba(20,32,42,.12);
+    border-radius:4px;
+    overflow:hidden;
+  }
+
+  /* Header band */
+  .band{
+    background:var(--band);
+    color:#fff;
+    padding:22px 30px 20px;
+  }
+  .band .kicker{
+    font-size:12.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:#a9c2d4;
+    margin:0 0 4px;
+  }
+  .band h1{
+    font-size:23px;
+    font-weight:700;
+    margin:0;
+    letter-spacing:-.01em;
+  }
+  .meta{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px 26px;
+    margin-top:16px;
+  }
+  .meta div{font-size:13px;}
+  .meta .lab{color:#a9c2d4;font-size:11px;letter-spacing:.06em;text-transform:uppercase;}
+  .meta .val{color:#fff;font-weight:600;}
+
+  .body{padding:24px 30px 30px;}
+
+  /* Risk summary hero */
+  .summary{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin-bottom:8px;
+  }
+  .tile{
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:14px 16px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  .tile .n{font-size:38px;font-weight:800;line-height:1;}
+  .tile .t{font-size:13px;font-weight:600;color:var(--muted);}
+  .tile.r{background:var(--red-bg);border-color:#f0cdca;}
+  .tile.r .n{color:var(--red);}
+  .tile.a{background:var(--amber-bg);border-color:#eeddb8;}
+  .tile.a .n{color:var(--amber);}
+  .tile.g{background:var(--green-bg);border-color:#c7e2d1;}
+  .tile.g .n{color:var(--green);}
+
+  .hint{font-size:12.5px;color:var(--muted);margin:6px 2px 22px;}
+
+  h2.sec{
+    font-size:13px;
+    letter-spacing:.02em;
+    margin:22px 0 10px;
+    padding-bottom:6px;
+    border-bottom:2px solid var(--ink);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+  h2.sec .count{font-weight:600;color:var(--muted);font-size:12px;}
+
+  .flag{
+    display:flex;
+    gap:12px;
+    padding:12px 14px;
+    border-radius:6px;
+    margin-bottom:8px;
+    border:1px solid transparent;
+  }
+  .flag.r{background:var(--red-bg);border-color:#f0cdca;}
+  .flag.a{background:var(--amber-bg);border-color:#eeddb8;}
+  .dot{
+    flex:0 0 auto;
+    width:12px;height:12px;border-radius:50%;
+    margin-top:5px;
+  }
+  .flag.r .dot{background:var(--red);}
+  .flag.a .dot{background:var(--amber);}
+  .flag .content{flex:1;}
+  .flag .q{font-weight:700;font-size:14px;margin:0 0 2px;}
+  .flag .reading{font-size:12.5px;color:var(--muted);margin:0 0 5px;}
+  .flag .action{font-size:13.5px;margin:0;}
+
+  /* Capture blocks */
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:6px;}
+  .card{border:1px solid var(--line);border-radius:6px;padding:13px 15px;}
+  .card h3{font-size:12px;letter-spacing:.02em;color:var(--muted);margin:0 0 9px;text-transform:uppercase;}
+  .row{display:flex;justify-content:space-between;font-size:13.5px;padding:3px 0;}
+  .row .k{color:var(--muted);}
+  .row .v{font-weight:700;}
+  .autoflag{
+    margin-top:10px;
+    font-size:12.5px;
+    background:var(--red-bg);
+    border:1px solid #f0cdca;
+    color:var(--red);
+    border-radius:5px;
+    padding:8px 10px;
+    font-weight:600;
+  }
+  .greens{font-size:12.5px;color:var(--muted);margin:2px 2px 0;}
+
+  .foot{
+    margin-top:26px;padding-top:12px;border-top:1px solid var(--line);
+    display:flex;justify-content:space-between;font-size:11.5px;color:var(--muted);
+  }
+  .mock{
+    max-width:760px;margin:0 auto 14px;font-size:12px;color:#7a8894;
+    text-align:center;letter-spacing:.03em;
+  }
+  @media (max-width:560px){
+    .meta,.summary,.grid2{grid-template-columns:1fr;}
+    .summary{gap:8px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .sheet{box-shadow:none;border-radius:0;max-width:100%;}
+    .mock{display:none;}
+  }
+</style>
+</head>
+<body>
+
+  <p class="mock">— SAMPLE OUTPUT / MOCKUP —</p>
+
+  <div class="sheet">
+    <div class="band">
+      <p class="kicker">Fitted Wardrobe — Site Survey</p>
+      <h1>Condition &amp; Installation Risk Report</h1>
+      <div class="meta">
+        <div><div class="lab">Job ref</div><div class="val">FW-1042</div></div>
+        <div><div class="lab">Customer</div><div class="val">J. Harper</div></div>
+        <div><div class="lab">Date</div><div class="val">11 Sep 2026</div></div>
+        <div><div class="lab">Room</div><div class="val">Master bedroom</div></div>
+        <div><div class="lab">Address</div><div class="val">14 Elmwood Rise</div></div>
+        <div><div class="lab">Surveyor</div><div class="val">T. Kaye</div></div>
+      </div>
+    </div>
+
+    <div class="body">
+
+      <div class="summary">
+        <div class="tile r"><span class="n">2</span><span class="t">Red<br>will cause a problem</span></div>
+        <div class="tile a"><span class="n">4</span><span class="t">Amber<br>check before ordering</span></div>
+        <div class="tile g"><span class="n">9</span><span class="t">Green<br>fine as-is</span></div>
+      </div>
+      <p class="hint">Reds and ambers are listed below with what to do about each. Deal with the reds before this job is ordered.</p>
+
+      <h2 class="sec">Red — will cause a fitting problem <span class="count">2 items</span></h2>
+
+      <div class="flag r">
+        <span class="dot"></span>
+        <div class="content">
+          <p class="q">Floor level across the run</p>
+          <p class="reading">Drops 14mm over 2.8m.</p>
+          <p class="action">More than 10mm out. Track and plinth will need packing and scribing — budget the extra time and confirm the approach before ordering.</p>
+        </div>
+      </div>
+
+      <div class="flag r">
+        <span class="dot"></span>
+        <div class="content">
+          <p class="q">Wall backing (tap &amp; push test)</p>
+          <p class="reading">Sounds hollow, flexes under hand pressure.</p>
+          <p class="action">Lath &amp; plaster — no solid backing. Standard fixings won't hold. Specify an alternative fixing method on the install sheet.</p>
+        </div>
+      </div>
+
+      <h2 class="sec">Amber — check or plan before ordering <span class="count">4 items</span></h2>
+
+      <div class="flag a">
+        <span class="dot"></span>
+        <div class="content">
+          <p class="q">Wall plumb</p>
+          <p class="reading">Leans 16mm over 2.4m height.</p>
+          <p class="action">10–20mm out. End panel will need scribing — check door clearance before ordering.</p>
+        </div>
+      </div>
+
+      <div class="flag a">
+        <span class="dot"></span>
+        <div class="content">
+          <p class="q">Coving present</p>
+          <p class="reading">Runs along the top of the run.</p>
+          <p class="action">Needs cutting/scribing around — factor the extra time into the fit.</p>
+        </div>
+      </div>
+
+      <div class="flag a">
+        <span class="dot"></span>
+        <div class="content">
+          <p class="q">Skirting projection</p>
+          <p class="reading">Projects 22mm.</p>
+          <p class="action">Over 15mm — liner won't sit flush. Scribe or remove. Get the customer's decision before ordering.</p>
+        </div>
+      </div>
+
+      <div class="flag a">
+        <span class="dot"></span>
+        <div class="content">
+          <p class="q">Carpet timing (sliding doors)</p>
+          <p class="reading">Carpet to be laid after install.</p>
+          <p class="action">Flag for the carpet fitter to work around the track.</p>
+        </div>
+      </div>
+
+      <p class="greens"><strong>9 checks clear:</strong> wall bow · room levels · wall face · ceiling height · sockets · pipes · radiators · access · parking.</p>
+
+      <h2 class="sec">Job decisions captured</h2>
+      <div class="grid2">
+        <div class="card">
+          <h3>Framing</h3>
+          <div class="row"><span class="k">Recommended to customer?</span><span class="v">Yes</span></div>
+          <div class="row"><span class="k">Customer decision</span><span class="v">Accepted</span></div>
+          <div class="autoflag">⚠ Framing auto-recommended — red flags present on this job.</div>
+        </div>
+        <div class="card">
+          <h3>Lighting / power</h3>
+          <div class="row"><span class="k">Power available for lighting?</span><span class="v">No</span></div>
+          <div class="row"><span class="k">Electrician required?</span><span class="v">Yes</span></div>
+        </div>
+      </div>
+
+      <div class="foot">
+        <span>Generated by SurveySafe (working title)</span>
+        <span>Page 1 of 1 · FW-1042</span>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+</html>

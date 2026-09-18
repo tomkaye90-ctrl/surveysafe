@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SurveySafe — Fitted Wardrobe Site Surveys, Done Right</title>
+<meta name="description" content="A phone tool that walks you through a fitted-wardrobe site survey and flags the conditions that cause installation problems.">
+<style>
+:root {
+  --ink: #16202a;
+  --muted: #5b6b78;
+  --line: #dbe2e8;
+  --band: #1f3a4d;
+  --band-dark: #162d3d;
+  --paper: #ffffff;
+  --bg: #f4f6f8;
+  --red: #b32b23;
+  --red-bg: #fbeceb;
+  --amber: #9a6a00;
+  --amber-bg: #fbf3e2;
+  --green: #1c7a45;
+  --green-bg: #eaf4ee;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: var(--ink);
+  line-height: 1.5;
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Layout ── */
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+section {
+  padding: 48px 0;
+}
+
+/* ── Hero ── */
+.hero {
+  background: var(--band);
+  color: #fff;
+  padding: 56px 0 48px;
+  text-align: center;
+}
+
+.hero-logo {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #7fb2d6;
+  margin: 0 0 12px;
+}
+
+.hero h1 {
+  font-size: clamp(26px, 5vw, 38px);
+  font-weight: 800;
+  line-height: 1.15;
+  margin: 0 0 16px;
+  letter-spacing: -0.01em;
+}
+
+.hero p {
+  font-size: clamp(15px, 2.5vw, 18px);
+  color: #b8ced9;
+  margin: 0 auto;
+  max-width: 580px;
+  line-height: 1.55;
+}
+
+/* ── Section headings ── */
+.section-label {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--band);
+  margin: 0 0 8px;
+  text-align: center;
+}
+
+.section-title {
+  font-size: clamp(22px, 4vw, 30px);
+  font-weight: 800;
+  text-align: center;
+  margin: 0 0 32px;
+  letter-spacing: -0.01em;
+}
+
+/* ── How it works ── */
+.steps {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.step {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  background: var(--paper);
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid var(--line);
+}
+
+.step-num {
+  flex: 0 0 auto;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--band);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.step-text h3 {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0 0 4px;
+}
+
+.step-text p {
+  font-size: 14px;
+  color: var(--muted);
+  margin: 0;
+}
+
+/* ── Gallery ── */
+.gallery-section {
+  background: var(--paper);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.gallery-scroll {
+  display: flex;
+  gap: 28px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding: 0 16px 16px;
+  margin: 0 -16px;
+}
+
+.gallery-scroll::-webkit-scrollbar { display: none; }
+
+.gallery-item {
+  flex: 0 0 auto;
+  scroll-snap-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 300px;
+}
+
+.phone-frame {
+  width: 280px;
+  height: 520px;
+  background: var(--paper);
+  border-radius: 28px;
+  box-shadow: 0 6px 24px rgba(20, 32, 42, 0.14);
+  border: 7px solid #23303b;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.phone-frame .top {
+  background: var(--band);
+  color: #fff;
+  padding: 14px 15px 12px;
+}
+
+.phone-frame .top .r1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  color: #a9c2d4;
+}
+
+.phone-frame .top .r1 .ref {
+  font-weight: 600;
+  color: #cfe0ec;
+}
+
+.phone-frame .top h2 {
+  font-size: 14px;
+  margin: 5px 0 0;
+  font-weight: 700;
+}
+
+.phone-frame .bar {
+  height: 4px;
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 3px;
+  margin-top: 10px;
+  overflow: hidden;
+}
+
+.phone-frame .bar span {
+  display: block;
+  height: 100%;
+  background: #7fb2d6;
+  border-radius: 3px;
+}
+
+.phone-frame .screen {
+  padding: 14px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  font-size: 13px;
+}
+
+.phone-frame .q-title {
+  font-size: 17px;
+  font-weight: 800;
+  margin: 4px 0 2px;
+}
+
+.phone-frame .q-hint {
+  font-size: 11.5px;
+  color: var(--muted);
+  margin: 0 0 12px;
+}
+
+.phone-frame .badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  background: #e8eff5;
+  color: var(--band);
+  border-radius: 20px;
+  padding: 3px 10px;
+  margin: 2px 0;
+}
+
+/* Door type options */
+.phone-frame .dopt {
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 14px 13px;
+  margin-bottom: 10px;
+}
+
+.phone-frame .dopt .dlab {
+  font-size: 14.5px;
+  font-weight: 800;
+}
+
+.phone-frame .dopt .dsub {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.phone-frame .dopt.sel {
+  border-color: var(--band);
+  border-width: 2px;
+  background: #f5f9fc;
+}
+
+.phone-frame .dopt.sel .dlab::after {
+  content: " \2713";
+  color: var(--band);
+}
+
+/* Band options */
+.phone-frame .opt {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1.5px solid var(--line);
+  border-radius: 11px;
+  padding: 12px;
+  margin-bottom: 9px;
+}
+
+.phone-frame .opt .swatch {
+  flex: 0 0 auto;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+}
+
+.phone-frame .opt .ot { flex: 1; }
+
+.phone-frame .opt .band-lab {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.phone-frame .opt .band-sub {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.phone-frame .opt .tick {
+  font-size: 14px;
+  color: transparent;
+  font-weight: 800;
+}
+
+.phone-frame .opt.g .swatch { background: var(--green); }
+.phone-frame .opt.a .swatch { background: var(--amber); }
+.phone-frame .opt.r .swatch { background: var(--red); }
+
+.phone-frame .opt.sel.g {
+  border-color: var(--green);
+  background: var(--green-bg);
+}
+
+.phone-frame .opt.sel.g .tick { color: var(--green); }
+
+.phone-frame .measure {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f5f9fc;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  padding: 10px 12px;
+  margin: 2px 0 10px;
+}
+
+.phone-frame .measure .ml {
+  font-size: 11.5px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.phone-frame .measure .mv {
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.phone-frame .measure .mv .u {
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+/* Section list */
+.phone-frame .prog {
+  font-size: 11.5px;
+  color: var(--muted);
+  margin: 2px 0 10px;
+  font-weight: 600;
+}
+
+.phone-frame .srow {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 11px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  margin-bottom: 7px;
+  background: #fff;
+}
+
+.phone-frame .srow.active {
+  border-color: var(--band);
+  border-width: 2px;
+  background: #f5f9fc;
+}
+
+.phone-frame .srow .ic {
+  flex: 0 0 auto;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.phone-frame .ic.done { background: var(--green); }
+.phone-frame .ic.now { background: var(--band); }
+.phone-frame .ic.todo { background: #c4ced6; }
+
+.phone-frame .srow .nm {
+  flex: 1;
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.phone-frame .srow .sub {
+  font-size: 10px;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.phone-frame .srow .chev {
+  color: #b7c2cc;
+  font-size: 15px;
+}
+
+/* Bulk mark */
+.phone-frame .bulk {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  border: 1.5px solid var(--green);
+  background: var(--green-bg);
+  color: var(--green);
+  border-radius: 11px;
+  padding: 12px;
+  font-size: 13px;
+  font-weight: 800;
+  font-family: inherit;
+  margin-bottom: 10px;
+}
+
+.phone-frame .orline {
+  text-align: center;
+  font-size: 10.5px;
+  color: var(--muted);
+  font-weight: 600;
+  margin: 0 0 8px;
+}
+
+.phone-frame .ckrow {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 11px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  margin-bottom: 6px;
+}
+
+.phone-frame .ckrow .box {
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  border: 1.5px solid #c4ced6;
+}
+
+.phone-frame .ckrow .cn {
+  flex: 1;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.phone-frame .ckrow .cs {
+  font-size: 10px;
+  color: var(--muted);
+}
+
+.phone-frame .cta {
+  margin-top: auto;
+  width: 100%;
+  border: none;
+  border-radius: 10px;
+  background: var(--band);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 12px;
+  font-family: inherit;
+}
+
+.phone-frame .cta.ghost {
+  background: #eef2f5;
+  color: #8a97a2;
+}
+
+/* Output sheet phone frame */
+.phone-frame-output {
+  width: 280px;
+  height: 520px;
+  background: var(--paper);
+  border-radius: 28px;
+  box-shadow: 0 6px 24px rgba(20, 32, 42, 0.14);
+  border: 7px solid #23303b;
+  overflow: hidden;
+  overflow-y: auto;
+}
+
+.phone-frame-output::-webkit-scrollbar { width: 0; }
+
+.phone-frame-output .out-band {
+  background: var(--band);
+  color: #fff;
+  padding: 16px 16px 14px;
+}
+
+.phone-frame-output .out-band .kicker {
+  font-size: 9.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #a9c2d4;
+  margin: 0 0 3px;
+}
+
+.phone-frame-output .out-band h2 {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.phone-frame-output .out-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 6px 12px;
+  margin-top: 12px;
+  font-size: 10px;
+}
+
+.phone-frame-output .out-meta .lab {
+  color: #a9c2d4;
+  font-size: 9px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.phone-frame-output .out-meta .val {
+  color: #fff;
+  font-weight: 600;
+}
+
+.phone-frame-output .out-body {
+  padding: 14px 14px 16px;
+}
+
+.phone-frame-output .out-summary {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.phone-frame-output .out-tile {
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  padding: 10px 8px;
+  text-align: center;
+}
+
+.phone-frame-output .out-tile .n {
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.phone-frame-output .out-tile .t {
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--muted);
+  display: block;
+  margin-top: 2px;
+}
+
+.phone-frame-output .out-tile.r { background: var(--red-bg); border-color: #f0cdca; }
+.phone-frame-output .out-tile.r .n { color: var(--red); }
+.phone-frame-output .out-tile.a { background: var(--amber-bg); border-color: #eeddb8; }
+.phone-frame-output .out-tile.a .n { color: var(--amber); }
+.phone-frame-output .out-tile.g { background: var(--green-bg); border-color: #c7e2d1; }
+.phone-frame-output .out-tile.g .n { color: var(--green); }
+
+.phone-frame-output .out-flag {
+  display: flex;
+  gap: 8px;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 6px;
+  border: 1px solid transparent;
+}
+
+.phone-frame-output .out-flag.r { background: var(--red-bg); border-color: #f0cdca; }
+.phone-frame-output .out-flag.a { background: var(--amber-bg); border-color: #eeddb8; }
+
+.phone-frame-output .out-flag .dot {
+  flex: 0 0 auto;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-top: 3px;
+}
+
+.phone-frame-output .out-flag.r .dot { background: var(--red); }
+.phone-frame-output .out-flag.a .dot { background: var(--amber); }
+
+.phone-frame-output .out-flag .fq {
+  font-weight: 700;
+  font-size: 11.5px;
+  margin: 0 0 1px;
+}
+
+.phone-frame-output .out-flag .fa {
+  font-size: 10.5px;
+  color: var(--muted);
+  margin: 0;
+}
+
+.phone-frame-output .out-sec {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  margin: 14px 0 8px;
+  padding-bottom: 4px;
+  border-bottom: 2px solid var(--ink);
+}
+
+.phone-frame-output .out-greens {
+  font-size: 10px;
+  color: var(--muted);
+  margin: 4px 0 0;
+}
+
+.gallery-caption {
+  font-size: 13px;
+  color: var(--muted);
+  text-align: center;
+  margin: 14px 0 0;
+  padding: 0 4px;
+  max-width: 280px;
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+/* scroll hint */
+.scroll-hint {
+  text-align: center;
+  font-size: 13px;
+  color: var(--muted);
+  margin: 24px 0 0;
+}
+
+/* ── Feedback ── */
+.feedback-section {
+  background: var(--paper);
+  border-top: 1px solid var(--line);
+}
+
+.feedback-form {
+  max-width: 540px;
+  margin: 0 auto;
+}
+
+.form-group {
+  margin-bottom: 28px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.radio-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.radio-group input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.radio-group label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 22px;
+  border: 2px solid var(--line);
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  min-width: 90px;
+  text-align: center;
+  margin: 0;
+}
+
+.radio-group input[type="radio"]:checked + label {
+  border-color: var(--band);
+  background: #edf3f8;
+  color: var(--band);
+}
+
+.radio-group label:active {
+  transform: scale(0.97);
+}
+
+textarea,
+input[type="email"] {
+  width: 100%;
+  border: 2px solid var(--line);
+  border-radius: 10px;
+  padding: 14px;
+  font-size: 15px;
+  font-family: inherit;
+  color: var(--ink);
+  background: var(--paper);
+  transition: border-color 0.15s;
+  -webkit-appearance: none;
+}
+
+textarea:focus,
+input[type="email"]:focus {
+  outline: none;
+  border-color: var(--band);
+}
+
+textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.email-hint {
+  font-size: 12px;
+  color: var(--muted);
+  margin: 6px 0 0 2px;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 16px;
+  background: var(--band);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 17px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.submit-btn:hover {
+  background: var(--band-dark);
+}
+
+.submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.form-error {
+  color: var(--red);
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 12px;
+  display: none;
+}
+
+/* Thank-you state */
+.thank-you {
+  display: none;
+  text-align: center;
+  padding: 40px 16px;
+}
+
+.thank-you .tick-circle {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--green-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+  font-size: 28px;
+  color: var(--green);
+  font-weight: 800;
+}
+
+.thank-you h3 {
+  font-size: 22px;
+  font-weight: 800;
+  margin: 0 0 8px;
+}
+
+.thank-you p {
+  font-size: 15px;
+  color: var(--muted);
+  margin: 0;
+}
+
+/* ── Footer ── */
+footer {
+  text-align: center;
+  padding: 28px 16px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* ── Desktop ── */
+@media (min-width: 768px) {
+  .steps {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .gallery-scroll {
+    justify-content: center;
+    flex-wrap: wrap;
+    overflow-x: visible;
+    padding: 0;
+    margin: 0;
+  }
+
+  .gallery-item {
+    scroll-snap-align: none;
+  }
+
+  .scroll-hint {
+    display: none;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- ── Hero ── -->
+<header class="hero">
+  <div class="container">
+    <p class="hero-logo">SurveySafe</p>
+    <h1>Stop finding problems at the wall</h1>
+    <p>One missed condition on the site survey &mdash; wall out of plumb, floor running away, skirting clash, carpet too thick, no access &mdash; and a profitable job turns into a return visit, a remake, or an on-site bodge you find out about three weeks later. SurveySafe walks you through every check so nothing gets missed.</p>
+  </div>
+</header>
+
+<!-- ── How it works ── -->
+<section>
+  <div class="container">
+    <p class="section-label">How it works</p>
+    <h2 class="section-title">Four steps. No typing.</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-text">
+          <h3>Pick sliding or hinged</h3>
+          <p>Choose once at the start. It switches the relevant checks on or off &mdash; you only see questions that apply to your job.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-text">
+          <h3>Walk the room, tap the band</h3>
+          <p>Each check has coloured bands (e.g.&nbsp;wall plumb: under 10&thinsp;mm / 10&ndash;20&thinsp;mm / over 20&thinsp;mm). Tap the one that applies. The tool knows the flag colour from the band &mdash; no typing unless you want to record an exact reading.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-text">
+          <h3>Clear low-risk sections fast</h3>
+          <p>Nothing to flag? Hit &ldquo;Mark all as fine&rdquo; and move on. It&rsquo;s per section, so you still eyeball each area.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-text">
+          <h3>Get a report the whole team can read</h3>
+          <p>A clean PDF survey plus a red/amber/green risk summary: every red and amber listed in plain English alongside what to do about it. Weeks later, anyone can pick it up.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Gallery ── -->
+<section class="gallery-section">
+  <div class="container">
+    <p class="section-label">Walkthrough</p>
+    <h2 class="section-title">What it actually looks like</h2>
+    <div class="gallery-scroll">
+
+      <!-- Screen 1: Door type selector -->
+      <div class="gallery-item">
+        <div class="phone-frame">
+          <div class="top">
+            <div class="r1"><span>New survey</span><span class="ref">FW-1043</span></div>
+            <h2>Start a survey</h2>
+            <div class="bar"><span style="width:6%"></span></div>
+          </div>
+          <div class="screen">
+            <p class="q-title">Sliding or hinged?</p>
+            <p class="q-hint">Sets which checks you'll be asked. You only answer this once.</p>
+            <div class="dopt sel">
+              <div class="dlab">Sliding doors</div>
+              <div class="dsub">Adds carpet, track &amp; full-height ceiling checks</div>
+            </div>
+            <div class="dopt">
+              <div class="dlab">Hinged doors</div>
+              <div class="dsub">Adds a door-swing clearance check</div>
+            </div>
+            <div class="cta">Start survey ›</div>
+          </div>
+        </div>
+        <p class="gallery-caption">Pick sliding or hinged once. It switches on only the checks that apply.</p>
+      </div>
+
+      <!-- Screen 2: Section overview -->
+      <div class="gallery-item">
+        <div class="phone-frame">
+          <div class="top">
+            <div class="r1"><span>Fitted wardrobe survey</span><span class="ref">FW-1042</span></div>
+            <h2>14 Elmwood Rise</h2>
+            <div class="bar"><span style="width:50%"></span></div>
+          </div>
+          <div class="screen">
+            <p class="prog">3 of 6 sections done · about 4 min left</p>
+            <div class="srow"><div class="ic done">✓</div><div class="nm">Walls<div class="sub">6 checks</div></div><span class="chev">›</span></div>
+            <div class="srow"><div class="ic done">✓</div><div class="nm">Floor<div class="sub">4 checks</div></div><span class="chev">›</span></div>
+            <div class="srow active"><div class="ic now">3</div><div class="nm">Ceiling<div class="sub">2 checks · in progress</div></div><span class="chev">›</span></div>
+            <div class="srow"><div class="ic todo">4</div><div class="nm">Obstructions<div class="sub">5 checks</div></div><span class="chev">›</span></div>
+            <div class="srow"><div class="ic todo">5</div><div class="nm">Access<div class="sub">4 checks</div></div><span class="chev">›</span></div>
+            <div class="srow"><div class="ic todo">6</div><div class="nm">Job details<div class="sub">Framing · lighting</div></div><span class="chev">›</span></div>
+            <div class="cta ghost">Finish &amp; generate report</div>
+          </div>
+        </div>
+        <p class="gallery-caption">Six short sections in a fixed order. Risky checks first, access last.</p>
+      </div>
+
+      <!-- Screen 3: Conditional check (sliding-only) -->
+      <div class="gallery-item">
+        <div class="phone-frame">
+          <div class="top">
+            <div class="r1"><span>Floor</span><span class="ref">Check 3 of 4</span></div>
+            <h2>Carpet pile depth</h2>
+            <div class="bar"><span style="width:75%"></span></div>
+          </div>
+          <div class="screen">
+            <span class="badge">Sliding-doors check</span>
+            <p class="q-hint" style="margin-top:6px">Only asked because this job is sliding doors. Tap the band that applies.</p>
+            <div class="opt g sel">
+              <span class="swatch" style="background:var(--green)"></span>
+              <div class="ot"><div class="band-lab">Under 15mm</div><div class="band-sub">Fine as-is</div></div>
+              <span class="tick">✓</span>
+            </div>
+            <div class="opt a">
+              <span class="swatch" style="background:var(--amber)"></span>
+              <div class="ot"><div class="band-lab">Over 15mm</div><div class="band-sub">Check door / plinth clearance</div></div>
+              <span class="tick">✓</span>
+            </div>
+            <div class="measure">
+              <span class="ml">Exact reading (optional)</span>
+              <span class="mv">12<span class="u"> mm</span></span>
+            </div>
+            <div class="cta">Next check ›</div>
+          </div>
+        </div>
+        <p class="gallery-caption">Conditional logic. This check only appears on sliding jobs &mdash; hinged surveys skip it.</p>
+      </div>
+
+      <!-- Screen 4: Bulk mark -->
+      <div class="gallery-item">
+        <div class="phone-frame">
+          <div class="top">
+            <div class="r1"><span>Access</span><span class="ref">Section 5 of 6</span></div>
+            <h2>Access</h2>
+            <div class="bar"><span style="width:88%"></span></div>
+          </div>
+          <div class="screen">
+            <p class="q-hint" style="margin-top:2px">Nothing to flag in this section? Clear it in one tap.</p>
+            <div class="bulk">✓ &nbsp;Mark all 4 as fine</div>
+            <p class="orline">— or check individually —</p>
+            <div class="ckrow"><span class="box"></span><div class="cn">Stairs / landing<div class="cs">Tight turn?</div></div></div>
+            <div class="ckrow"><span class="box"></span><div class="cn">Parking<div class="cs">Carrying distance?</div></div></div>
+            <div class="ckrow"><span class="box"></span><div class="cn">Room to work<div class="cs">Cramped?</div></div></div>
+            <div class="ckrow"><span class="box"></span><div class="cn">Room emptied<div class="cs">Blocks measuring?</div></div></div>
+            <div class="cta">Next section ›</div>
+          </div>
+        </div>
+        <p class="gallery-caption">"Mark all as fine" clears a low-risk section in one tap. Per section, not the whole survey.</p>
+      </div>
+
+      <!-- Screen 5: Output sheet -->
+      <div class="gallery-item">
+        <div class="phone-frame-output">
+          <div class="out-band">
+            <p class="kicker">Fitted Wardrobe — Site Survey</p>
+            <h2>Risk Report</h2>
+            <div class="out-meta">
+              <div><div class="lab">Job ref</div><div class="val">FW-1042</div></div>
+              <div><div class="lab">Customer</div><div class="val">J. Harper</div></div>
+              <div><div class="lab">Date</div><div class="val">11 Sep 2026</div></div>
+              <div><div class="lab">Room</div><div class="val">Master bedroom</div></div>
+              <div><div class="lab">Address</div><div class="val">14 Elmwood Rise</div></div>
+              <div><div class="lab">Surveyor</div><div class="val">T. Kaye</div></div>
+            </div>
+          </div>
+          <div class="out-body">
+            <div class="out-summary">
+              <div class="out-tile r"><span class="n">2</span><span class="t">Red</span></div>
+              <div class="out-tile a"><span class="n">4</span><span class="t">Amber</span></div>
+              <div class="out-tile g"><span class="n">9</span><span class="t">Green</span></div>
+            </div>
+            <div class="out-sec">Red — will cause a problem</div>
+            <div class="out-flag r">
+              <span class="dot"></span>
+              <div>
+                <p class="fq">Floor level across the run</p>
+                <p class="fa">Drops 14mm over 2.8m. Track and plinth will need packing — budget the extra time.</p>
+              </div>
+            </div>
+            <div class="out-flag r">
+              <span class="dot"></span>
+              <div>
+                <p class="fq">Wall backing</p>
+                <p class="fa">Hollow, flexes under hand pressure. Standard fixings won't hold — specify alternative method.</p>
+              </div>
+            </div>
+            <div class="out-sec">Amber — check before ordering</div>
+            <div class="out-flag a">
+              <span class="dot"></span>
+              <div>
+                <p class="fq">Wall plumb</p>
+                <p class="fa">16mm out over 2.4m. End panel needs scribing — check door clearance.</p>
+              </div>
+            </div>
+            <div class="out-flag a">
+              <span class="dot"></span>
+              <div>
+                <p class="fq">Coving present</p>
+                <p class="fa">Needs cutting around — factor extra time into the fit.</p>
+              </div>
+            </div>
+            <p class="out-greens"><strong>9 checks clear</strong></p>
+          </div>
+        </div>
+        <p class="gallery-caption">The finished report. Red/amber/green at a glance, with plain-English actions for every flag.</p>
+      </div>
+
+    </div>
+    <p class="scroll-hint">Swipe to see all screens →</p>
+  </div>
+</section>
+
+<!-- ── Feedback ── -->
+<section class="feedback-section" id="feedback">
+  <div class="container">
+    <p class="section-label">Quick feedback</p>
+    <h2 class="section-title">Would this be useful to you?</h2>
+
+    <div class="feedback-form" id="feedbackForm">
+      <form id="surveyForm" novalidate>
+
+        <div class="form-group">
+          <label>Would this save you hassle on site?</label>
+          <div class="radio-group">
+            <div><input type="radio" name="q1" id="q1-yes" value="Yes" required><label for="q1-yes">Yes</label></div>
+            <div><input type="radio" name="q1" id="q1-maybe" value="Maybe"><label for="q1-maybe">Maybe</label></div>
+            <div><input type="radio" name="q1" id="q1-no" value="No"><label for="q1-no">No</label></div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Would you pay around £5–15/month for it?</label>
+          <div class="radio-group">
+            <div><input type="radio" name="q2" id="q2-yes" value="Yes" required><label for="q2-yes">Yes</label></div>
+            <div><input type="radio" name="q2" id="q2-maybe" value="Not sure"><label for="q2-maybe">Not sure</label></div>
+            <div><input type="radio" name="q2" id="q2-no" value="No"><label for="q2-no">No</label></div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>How do you record surveys now?</label>
+          <div class="radio-group">
+            <div><input type="radio" name="q3" id="q3-paper" value="Paper" required><label for="q3-paper">Paper</label></div>
+            <div><input type="radio" name="q3" id="q3-phone" value="Phone notes"><label for="q3-phone">Phone notes</label></div>
+            <div><input type="radio" name="q3" id="q3-app" value="An app"><label for="q3-app">An app</label></div>
+            <div><input type="radio" name="q3" id="q3-nothing" value="Nothing"><label for="q3-nothing">Nothing</label></div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="feedback_text">Anything else — what's missing, or what would stop you using it?</label>
+          <textarea id="feedback_text" name="feedback_text" placeholder="Type here (optional)"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Your email (optional — only if you'd like me to follow up)</label>
+          <input type="email" id="email" name="email" placeholder="e.g. you@example.com">
+          <p class="email-hint">Not required. I won't spam you.</p>
+        </div>
+
+        <button type="submit" class="submit-btn" id="submitBtn">Send feedback</button>
+        <p class="form-error" id="formError"></p>
+      </form>
+    </div>
+
+    <div class="thank-you" id="thankYou">
+      <div class="tick-circle">✓</div>
+      <h3>Thanks — that's really useful</h3>
+      <p>Appreciate you taking the time. If you left your email I'll be in touch.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>&copy; 2026 SurveySafe (working title). Built for fitters, by a fitter.</p>
+</footer>
+
+<script>
+(function () {
+  var SUPABASE_URL = 'https://mxbijvzazcqaniynwsje.supabase.co';
+  var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im14YmlqdnphemNxYW5peW53c2plIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk3NTEzMjksImV4cCI6MjEwNTMyNzMyOX0.8S3pBcp8IkSuRSXcTn2y0Hvk5toC8JiBHqbzZMPYLuo';
+
+  var form = document.getElementById('surveyForm');
+  var btn = document.getElementById('submitBtn');
+  var errEl = document.getElementById('formError');
+  var thankYou = document.getElementById('thankYou');
+  var formWrap = document.getElementById('feedbackForm');
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    errEl.style.display = 'none';
+
+    var q1 = form.querySelector('input[name="q1"]:checked');
+    var q2 = form.querySelector('input[name="q2"]:checked');
+    var q3 = form.querySelector('input[name="q3"]:checked');
+
+    if (!q1 || !q2 || !q3) {
+      errEl.textContent = 'Please answer all three questions before submitting.';
+      errEl.style.display = 'block';
+      return;
+    }
+
+    var data = {
+      q1: q1.value,
+      q2: q2.value,
+      q3: q3.value,
+      feedback_text: form.feedback_text.value.trim() || null,
+      email: form.email.value.trim() || null
+    };
+
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+
+    fetch(SUPABASE_URL + '/rest/v1/feedback', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPABASE_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_KEY,
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify(data)
+    })
+    .then(function (res) {
+      if (!res.ok) throw new Error('Server error');
+      formWrap.style.display = 'none';
+      thankYou.style.display = 'block';
+    })
+    .catch(function () {
+      errEl.textContent = 'Something went wrong — try again in a moment.';
+      errEl.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Send feedback';
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

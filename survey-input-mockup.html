@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fitted Wardrobe Survey — Input Mockups</title>
+<style>
+  :root{
+    --ink:#16202a;
+    --muted:#5b6b78;
+    --line:#dbe2e8;
+    --band:#1f3a4d;
+    --paper:#ffffff;
+    --red:#b32b23;
+    --red-bg:#fbeceb;
+    --amber:#9a6a00;
+    --amber-bg:#fbf3e2;
+    --green:#1c7a45;
+    --green-bg:#eaf4ee;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:#eef1f4;
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);
+    line-height:1.4;
+    padding:26px 16px 40px;
+  }
+  .mock{
+    text-align:center;font-size:12px;color:#7a8894;letter-spacing:.03em;margin:0 auto 22px;
+  }
+  .stage{
+    display:flex;gap:34px 30px;justify-content:center;align-items:flex-start;flex-wrap:wrap;
+    max-width:770px;margin:0 auto;
+  }
+  .phone{
+    width:340px;
+    height:612px;
+    display:flex;
+    flex-direction:column;
+    background:var(--paper);
+    border-radius:30px;
+    box-shadow:0 8px 30px rgba(20,32,42,.16);
+    border:8px solid #23303b;
+    overflow:hidden;
+  }
+  .caption{
+    text-align:center;font-size:12.5px;color:var(--muted);margin:12px 4px 0;max-width:340px;font-weight:500;
+  }
+  .col{display:flex;flex-direction:column;align-items:center;width:340px;}
+
+  /* App top bar */
+  .top{background:var(--band);color:#fff;padding:16px 18px 14px;}
+  .top .r1{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;color:#a9c2d4;}
+  .top .r1 .ref{font-weight:600;color:#cfe0ec;}
+  .top h1{font-size:16px;margin:6px 0 0;font-weight:700;}
+  .bar{height:5px;background:rgba(255,255,255,.18);border-radius:3px;margin-top:12px;overflow:hidden;}
+  .bar span{display:block;height:100%;background:#7fb2d6;border-radius:3px;}
+
+  .screen{padding:16px 16px 20px;flex:1;display:flex;flex-direction:column;}
+
+  .q{font-size:20px;font-weight:800;margin:6px 2px 2px;letter-spacing:-.01em;}
+  .qh{font-size:13px;color:var(--muted);margin:0 2px 15px;}
+
+  .badge{
+    display:inline-block;font-size:11px;font-weight:700;letter-spacing:.02em;
+    background:#e8eff5;color:var(--band);border-radius:20px;padding:4px 11px;margin:2px 0 2px;
+  }
+
+  /* Door-type big options */
+  .dopt{
+    border:1.5px solid var(--line);border-radius:15px;padding:17px 16px;margin-bottom:13px;
+  }
+  .dopt .dlab{font-size:17px;font-weight:800;}
+  .dopt .dsub{font-size:12.5px;color:var(--muted);margin-top:3px;}
+  .dopt.sel{border-color:var(--band);border-width:2px;background:#f5f9fc;}
+  .dopt.sel .dlab::after{content:" ✓";color:var(--band);}
+
+  /* Band options */
+  .opt{
+    display:flex;align-items:center;gap:13px;
+    border:1.5px solid var(--line);border-radius:13px;padding:15px;margin-bottom:11px;
+  }
+  .opt .swatch{flex:0 0 auto;width:16px;height:16px;border-radius:50%;}
+  .opt .ot{flex:1;}
+  .opt .band-lab{font-size:15.5px;font-weight:700;}
+  .opt .band-sub{font-size:12.5px;color:var(--muted);}
+  .opt .tick{font-size:16px;color:transparent;font-weight:800;}
+  .opt.g .swatch{background:var(--green);}
+  .opt.a .swatch{background:var(--amber);}
+  .opt.r .swatch{background:var(--red);}
+  .opt.sel.g{border-color:var(--green);background:var(--green-bg);}
+  .opt.sel.g .tick{color:var(--green);}
+
+  .measure{
+    display:flex;align-items:center;justify-content:space-between;
+    background:#f5f9fc;border:1px solid var(--line);border-radius:11px;padding:12px 15px;margin:3px 0 13px;
+  }
+  .measure .ml{font-size:13.5px;color:var(--muted);font-weight:600;}
+  .measure .mv{font-size:16px;font-weight:800;}
+  .measure .mv .u{font-size:12px;color:var(--muted);font-weight:600;}
+
+  /* Section list + reorder */
+  .prog{font-size:13px;color:var(--muted);margin:2px 2px 12px;font-weight:600;}
+  .srow{
+    display:flex;align-items:center;gap:11px;
+    padding:12px 13px;border:1px solid var(--line);border-radius:11px;margin-bottom:9px;background:#fff;
+  }
+  .srow.active{border-color:var(--band);border-width:2px;background:#f5f9fc;}
+  .srow.drag{box-shadow:0 8px 18px rgba(20,32,42,.20);transform:translateX(6px);border-color:#b7c2cc;}
+  .handle{flex:0 0 auto;color:#aeb9c2;font-size:17px;line-height:1;cursor:grab;letter-spacing:-1px;}
+  .srow .ic{
+    flex:0 0 auto;width:24px;height:24px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;
+  }
+  .ic.done{background:var(--green);}
+  .ic.now{background:var(--band);}
+  .ic.todo{background:#c4ced6;}
+  .srow .nm{flex:1;font-size:14px;font-weight:600;}
+  .srow .sub{font-size:11.5px;color:var(--muted);font-weight:500;}
+  .srow .chev{color:#b7c2cc;font-size:17px;}
+
+  /* Bulk mark */
+  .bulk{
+    display:flex;align-items:center;justify-content:center;gap:8px;width:100%;
+    border:1.5px solid var(--green);background:var(--green-bg);color:var(--green);
+    border-radius:13px;padding:15px;font-size:15px;font-weight:800;font-family:inherit;margin-bottom:14px;
+  }
+  .orline{text-align:center;font-size:12px;color:var(--muted);font-weight:600;margin:0 0 12px;}
+  .ckrow{
+    display:flex;align-items:center;gap:11px;
+    padding:12px 13px;border:1px solid var(--line);border-radius:11px;margin-bottom:8px;
+  }
+  .ckrow .box{flex:0 0 auto;width:18px;height:18px;border-radius:5px;border:1.5px solid #c4ced6;}
+  .ckrow .cn{flex:1;font-size:13.5px;font-weight:600;}
+  .ckrow .cs{font-size:11.5px;color:var(--muted);}
+
+  .cta{
+    margin-top:auto;width:100%;border:none;border-radius:12px;
+    background:var(--band);color:#fff;font-size:15px;font-weight:700;padding:14px;font-family:inherit;
+  }
+  .cta.ghost{background:#eef2f5;color:#8a97a2;}
+
+  @media (max-width:400px){
+    .phone,.col{width:100%;max-width:340px;}
+  }
+</style>
+</head>
+<body>
+
+  <p class="mock">— SAMPLE INPUT SCREENS / MOCKUP —</p>
+
+  <div class="stage">
+
+    <!-- Screen 1: door type selector -->
+    <div class="col">
+      <div class="phone">
+        <div class="top">
+          <div class="r1"><span>New survey</span><span class="ref">FW-1043</span></div>
+          <h1>Start a survey</h1>
+          <div class="bar"><span style="width:6%"></span></div>
+        </div>
+        <div class="screen">
+          <p class="q">Sliding or hinged?</p>
+          <p class="qh">Sets which checks you'll be asked. You only answer this once.</p>
+
+          <div class="dopt sel">
+            <div class="dlab">Sliding doors</div>
+            <div class="dsub">Adds carpet, track &amp; full-height ceiling checks</div>
+          </div>
+          <div class="dopt">
+            <div class="dlab">Hinged doors</div>
+            <div class="dsub">Adds a door-swing clearance check</div>
+          </div>
+
+          <button class="cta">Start survey ›</button>
+        </div>
+      </div>
+      <p class="caption">1 · Door type is asked once at the start. It switches the door-specific checks on or off — so the surveyor never sees questions that don't apply.</p>
+    </div>
+
+    <!-- Screen 2: section overview -->
+    <div class="col">
+      <div class="phone">
+        <div class="top">
+          <div class="r1"><span>Fitted wardrobe survey</span><span class="ref">FW-1042</span></div>
+          <h1>14 Elmwood Rise</h1>
+          <div class="bar"><span style="width:50%"></span></div>
+        </div>
+        <div class="screen">
+          <p class="prog">3 of 6 sections done · about 4 min left</p>
+
+          <div class="srow"><div class="ic done">✓</div><div class="nm">Walls<div class="sub">6 checks</div></div><span class="chev">›</span></div>
+          <div class="srow"><div class="ic done">✓</div><div class="nm">Floor<div class="sub">4 checks</div></div><span class="chev">›</span></div>
+          <div class="srow active"><div class="ic now">3</div><div class="nm">Ceiling<div class="sub">2 checks · in progress</div></div><span class="chev">›</span></div>
+          <div class="srow"><div class="ic todo">4</div><div class="nm">Obstructions<div class="sub">5 checks</div></div><span class="chev">›</span></div>
+          <div class="srow"><div class="ic todo">5</div><div class="nm">Access<div class="sub">4 checks</div></div><span class="chev">›</span></div>
+          <div class="srow"><div class="ic todo">6</div><div class="nm">Job details<div class="sub">Framing · lighting</div></div><span class="chev">›</span></div>
+
+          <button class="cta ghost">Finish &amp; generate report</button>
+        </div>
+      </div>
+      <p class="caption">2 · The whole survey is six short sections in a fixed order — risky checks (walls, floor) first, access last. Tick through and you're done.</p>
+    </div>
+
+    <!-- Screen 3: conditional question (sliding-only) -->
+    <div class="col">
+      <div class="phone">
+        <div class="top">
+          <div class="r1"><span>Floor</span><span class="ref">Check 3 of 4</span></div>
+          <h1>Carpet pile depth</h1>
+          <div class="bar"><span style="width:75%"></span></div>
+        </div>
+        <div class="screen">
+          <span class="badge">Sliding-doors check</span>
+          <p class="qh" style="margin-top:8px">Only asked because this job is sliding doors. Tap the band that applies.</p>
+
+          <div class="opt g sel">
+            <span class="swatch"></span>
+            <div class="ot"><div class="band-lab">Under 15mm</div><div class="band-sub">Fine as-is</div></div>
+            <span class="tick">✓</span>
+          </div>
+          <div class="opt a">
+            <span class="swatch"></span>
+            <div class="ot"><div class="band-lab">Over 15mm</div><div class="band-sub">Check door / plinth clearance</div></div>
+            <span class="tick">✓</span>
+          </div>
+
+          <div class="measure">
+            <span class="ml">Exact reading (optional)</span>
+            <span class="mv">12<span class="u"> mm</span></span>
+          </div>
+
+          <button class="cta">Next check ›</button>
+        </div>
+      </div>
+      <p class="caption">3 · Conditional logic in action. This check only appears on sliding jobs — a hinged survey skips it entirely, so nobody wades through irrelevant questions.</p>
+    </div>
+
+    <!-- Screen 4: per-section bulk mark -->
+    <div class="col">
+      <div class="phone">
+        <div class="top">
+          <div class="r1"><span>Access</span><span class="ref">Section 5 of 6</span></div>
+          <h1>Access</h1>
+          <div class="bar"><span style="width:88%"></span></div>
+        </div>
+        <div class="screen">
+          <p class="qh" style="margin-top:2px">Nothing to flag in this section? Clear it in one tap.</p>
+
+          <button class="bulk">✓ &nbsp;Mark all 4 as fine</button>
+          <p class="orline">— or check individually —</p>
+
+          <div class="ckrow"><span class="box"></span><div class="cn">Stairs / landing<div class="cs">Tight turn?</div></div></div>
+          <div class="ckrow"><span class="box"></span><div class="cn">Parking<div class="cs">Carrying distance?</div></div></div>
+          <div class="ckrow"><span class="box"></span><div class="cn">Room to work<div class="cs">Cramped?</div></div></div>
+          <div class="ckrow"><span class="box"></span><div class="cn">Room emptied<div class="cs">Blocks measuring?</div></div></div>
+
+          <button class="cta">Next section ›</button>
+        </div>
+      </div>
+      <p class="caption">4 · Per-section bulk mark. Low-risk sections like Access clear in one tap — but it's per section, so the surveyor still eyeballs each area rather than skipping the whole survey.</p>
+    </div>
+
+  </div>
+
+</body>
+</html>
