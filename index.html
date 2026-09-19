@@ -1124,8 +1124,8 @@ footer {
 
 <script>
 (function () {
-  var SUPABASE_URL = 'https://mxbijvzazcqaniynwsje.supabase.co';
-  var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im14YmlqdnphemNxYW5peW53c2plIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk3NTEzMjksImV4cCI6MjEwNTMyNzMyOX0.8S3pBcp8IkSuRSXcTn2y0Hvk5toC8JiBHqbzZMPYLuo';
+  var NEON_AUTH_URL = 'https://ep-divine-firefly-za0xp5zd.neonauth.c-2.eu-west-2.aws.neon.tech/neondb/auth';
+  var NEON_API_URL = 'https://ep-divine-firefly-za0xp5zd.apirest.c-2.eu-west-2.aws.neon.tech/neondb/rest/v1';
 
   var form = document.getElementById('surveyForm');
   var btn = document.getElementById('submitBtn');
@@ -1158,15 +1158,21 @@ footer {
     btn.disabled = true;
     btn.textContent = 'Sending…';
 
-    fetch(SUPABASE_URL + '/rest/v1/feedback', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'apikey': SUPABASE_KEY,
-        'Authorization': 'Bearer ' + SUPABASE_KEY,
-        'Prefer': 'return=minimal'
-      },
-      body: JSON.stringify(data)
+    fetch(NEON_AUTH_URL + '/token/anonymous', { credentials: 'omit' })
+    .then(function (res) {
+      if (!res.ok) throw new Error('Token error');
+      return res.json();
+    })
+    .then(function (auth) {
+      return fetch(NEON_API_URL + '/feedback', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + auth.token,
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify(data)
+      });
     })
     .then(function (res) {
       if (!res.ok) throw new Error('Server error');
